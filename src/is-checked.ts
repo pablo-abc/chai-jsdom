@@ -12,6 +12,7 @@ export function assertChecked(
     'expected #{this} to be checked',
     'expected #{this} not to be checked',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

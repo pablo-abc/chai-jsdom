@@ -12,6 +12,7 @@ export function assertHasAccessibleDescription(
     'expected #{this} to have an accessible description',
     'expected #{this} not to have an accessible description',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

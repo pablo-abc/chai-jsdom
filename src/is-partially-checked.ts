@@ -12,6 +12,7 @@ export function assertPartiallyChecked(
     'expected #{this} to be partially checked',
     'expected #{this} not to be partially checked',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

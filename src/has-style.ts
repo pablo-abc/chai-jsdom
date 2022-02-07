@@ -13,6 +13,7 @@ export function assertHasStyle(
     'expected #{this} to have style: #{exp}',
     'expected #{this} not to have style: #{exp}',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

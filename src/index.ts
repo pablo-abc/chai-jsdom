@@ -45,16 +45,17 @@ export default function chaiJSDOM(
       'expected #{this} to be an HTML or SVG element',
       'expected #{this} not to be an HTML or SVG element',
       undefined,
-      undefined
+      undefined,
+      false
     );
   });
 
   Assertion.addProperty('disabled', function () {
-    assertDisabled.call(this, this._obj);
+    assertDisabled.call(this, utils, this._obj);
   });
 
   Assertion.addProperty('enabled', function () {
-    assertEnabled.call(this, this._obj);
+    assertEnabled.call(this, utils, this._obj);
   });
 
   Assertion.overwriteProperty('empty', function (_super: any) {
@@ -78,7 +79,9 @@ export default function chaiJSDOM(
         isInContainer,
         'expected #{this} to be in #{exp}',
         'expected #{this} not to be in #{exp}',
-        undefined
+        undefined,
+        undefined,
+        false
       );
     },
     function chainingBehaviour(this: Chai.AssertionPrototype) {
@@ -141,7 +144,8 @@ export default function chaiJSDOM(
               'expected #{this} to contain #{exp}',
               'expected #{this} not to contain #{exp}',
               undefined,
-              undefined
+              undefined,
+              false
             );
           } else if (Array.isArray(actual) && utils.flag(this, 'class')) {
             const splitValues = splitClassNames(value);
@@ -149,8 +153,8 @@ export default function chaiJSDOM(
               splitValues.every((v) => actual.includes(v)),
               'expected #{this} to contain: #{exp}',
               'expected #{this} not to contain: #{exp}',
-              splitValues.join(' '),
-              actual.join(' ')
+              splitValues.sort().join(' '),
+              actual.sort().join(' ')
             );
           } else {
             _super.apply(this, arguments);
@@ -266,7 +270,8 @@ export default function chaiJSDOM(
         'expected #{this} to be either a form or fieldset element',
         'expected #{this} not to be either a form or fieldset element',
         undefined,
-        undefined
+        undefined,
+        false
       );
       assertHasFormValues.call(this, actual, values);
     };
@@ -299,7 +304,8 @@ export default function chaiJSDOM(
       'expected #{this} to have text content',
       'expecte #{this} not to have text content',
       undefined,
-      undefined
+      undefined,
+      false
     );
     utils.flag(this, 'object', textContent);
   });
@@ -326,7 +332,8 @@ export default function chaiJSDOM(
       'expected #{this} to have a value',
       'expected #{this} not to have a value',
       undefined,
-      undefined
+      undefined,
+      false
     );
     utils.flag(this, 'object', value);
   });

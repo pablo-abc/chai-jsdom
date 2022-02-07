@@ -13,6 +13,8 @@ export function assertIsInTheDocument(
     isInDocument.pass,
     'expected #{this} to be in the document',
     'expected #{this} not to be in the document',
-    undefined
+    undefined,
+    undefined,
+    false
   );
 }

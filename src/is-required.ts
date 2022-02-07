@@ -12,6 +12,7 @@ export function assertRequired(
     'expected #{this} to be required',
     'expected #{this} not to be required',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

@@ -12,6 +12,7 @@ export function assertVisible(
     'expected #{this} to be visible',
     'expected #{this} not to be visible',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

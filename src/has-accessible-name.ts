@@ -12,6 +12,7 @@ export function assertHasAccessibleName(
     'expected #{this} to have an accessible name',
     'expected #{this} not to have an accessible name',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }

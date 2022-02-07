@@ -10,6 +10,8 @@ export function assertIsEmptyDomElement(
     isEmpty.pass,
     'expected #{this} to be empty',
     'expected #{this} not to be empty',
-    undefined
+    undefined,
+    undefined,
+    false
   );
 }

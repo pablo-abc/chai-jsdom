@@ -11,6 +11,7 @@ export function assertHasFocus(
     'expected #{this} to have focus',
     'expected #{this} not to have focus',
     undefined,
-    undefined
+    undefined,
+    false
   );
 }
