@@ -27,7 +27,6 @@
     "@types/css": "^0.0.33",
     "chai": "^4.3.6",
     "global-jsdom": "^8.4.0",
-    "jest-dom": "link:@types/@testing-library/jest-dom",
     "jsdom": "^19.0.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",

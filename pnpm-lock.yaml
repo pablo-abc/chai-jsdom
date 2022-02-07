@@ -12,7 +12,6 @@ specifiers:
   css: ^3.0.0
   dom-accessibility-api: ^0.5.11
   global-jsdom: ^8.4.0
-  jest-dom: link:@types/@testing-library/jest-dom
   jsdom: ^19.0.0
   prettier: ^2.5.1
   redent: ^4.0.0
@@ -38,7 +37,6 @@ devDependencies:
   '@types/css': 0.0.33
   chai: 4.3.6
   global-jsdom: 8.4.0_jsdom@19.0.0
-  jest-dom: link:@types/@testing-library/jest-dom
   jsdom: 19.0.0
   prettier: 2.5.1
   rimraf: 3.0.2
