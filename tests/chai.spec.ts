@@ -111,7 +111,7 @@ Chai('validates if required or not', () => {
   expect(screen.getByTestId('supported-role-aria')).to.be.required;
 });
 
-Chai('validaes if visible or not', () => {
+Chai('validates if visible or not', () => {
   const div = document.createElement('div');
   div.innerHTML = `
 <div data-testid="zero-opacity" style="opacity: 0">Zero Opacity Example</div>
