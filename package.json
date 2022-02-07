@@ -1,6 +1,6 @@
 {
   "name": "chai-jsdom",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "jest-dom style assertions for Chai",
   "main": "dist/cjs/index.cjs",
   "browser": "dist/esm/index.mjs",
