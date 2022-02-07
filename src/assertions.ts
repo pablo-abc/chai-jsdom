@@ -11,3 +11,5 @@ export { assertHasAttribute } from './has-attribute';
 export { assertHasFocus } from './has-focus';
 export { assertHasFormValues } from './has-form-values';
 export { assertHasStyle } from './has-style';
+export { assertChecked } from './is-checked';
+export { assertPartiallyChecked } from './is-partially-checked';

@@ -21,30 +21,26 @@ Chai('validates if value provided is an element', () => {
 });
 
 Chai('validates if disabled or not', () => {
-  const enabledInput = document.createElement('textarea');
-  const disabledInput = document.createElement('input');
-  disabledInput.disabled = true;
-
-  expect(disabledInput).to.be.disabled;
-  expect(disabledInput).to.not.be.enabled;
-  expect(enabledInput).to.not.be.disabled;
-  expect(enabledInput).to.be.enabled;
-});
-
-Chai('validates if enabled or not', () => {
-  const enabledInput = document.createElement('textarea');
-  const disabledInput = document.createElement('input');
-  disabledInput.disabled = true;
-
-  expect(disabledInput).to.not.be.enabled;
-  expect(enabledInput).to.be.enabled;
+  document.body.innerHTML = `
+<button data-testid="button" type="submit" disabled>submit</button>
+<fieldset disabled><input type="text" data-testid="input" /></fieldset>
+<a href="..." disabled>link</a>`;
+  expect(screen.getByTestId('button')).to.be.disabled;
+  expect(screen.getByTestId('button')).to.not.be.enabled;
+  expect(screen.getByTestId('input')).to.be.disabled;
+  expect(screen.getByTestId('input')).to.not.be.enabled;
+  expect(screen.getByText('link')).not.to.be.disabled;
+  expect(screen.getByText('link')).to.be.enabled;
 });
 
 Chai('validates if empty or not', () => {
-  const element = document.createElement('div');
-  expect(element).to.be.empty;
-  element.appendChild(document.createElement('span'));
-  expect(element).to.not.be.empty;
+  document.body.innerHTML = `
+<span data-testid="not-empty"><span data-testid="empty"></span></span>
+<span data-testid="with-whitespace"> </span>
+<span data-testid="with-comment"><!-- comment --></span>`;
+  expect(screen.getByTestId('empty')).to.be.empty;
+  expect(screen.getByTestId('not-empty')).not.to.be.empty;
+  expect(screen.getByTestId('with-whitespace')).not.to.be.empty;
 });
 
 Chai('validates if in element or document', () => {
@@ -61,26 +57,58 @@ Chai('validates if in element or document', () => {
 });
 
 Chai('validates if invalid or not', () => {
-  const input = document.createElement('input');
-  expect(input).to.not.be.invalid;
-  expect(input).to.be.valid;
-  input.required = true;
-  expect(input).to.be.invalid;
-  expect(input).to.not.be.valid;
-  input.required = false;
-  input.setAttribute('aria-invalid', 'true');
-  expect(input).to.be.invalid;
-  expect(input).to.not.be.valid;
+  document.body.innerHTML = `
+<input data-testid="no-aria-invalid" />
+<input data-testid="aria-invalid" aria-invalid />
+<input data-testid="aria-invalid-value" aria-invalid="true" />
+<input data-testid="aria-invalid-false" aria-invalid="false" />
+
+<form data-testid="valid-form">
+  <input />
+</form>
+
+<form data-testid="invalid-form">
+  <input required />
+</form>`;
+  expect(screen.getByTestId('no-aria-invalid')).not.to.be.invalid;
+  expect(screen.getByTestId('aria-invalid')).to.be.invalid;
+  expect(screen.getByTestId('aria-invalid-value')).to.be.invalid;
+  expect(screen.getByTestId('aria-invalid-false')).not.to.be.invalid;
+
+  expect(screen.getByTestId('valid-form')).not.to.be.invalid;
+  expect(screen.getByTestId('invalid-form')).to.be.invalid;
+
+  expect(screen.getByTestId('no-aria-invalid')).to.be.valid;
+  expect(screen.getByTestId('aria-invalid')).not.to.be.valid;
+  expect(screen.getByTestId('aria-invalid-value')).not.to.be.valid;
+  expect(screen.getByTestId('aria-invalid-false')).to.be.valid;
+
+  expect(screen.getByTestId('valid-form')).to.be.valid;
+  expect(screen.getByTestId('invalid-form')).not.to.be.valid;
 });
 
 Chai('validates if required or not', () => {
-  const input = document.createElement('input');
-  expect(input).to.not.be.required;
-  input.required = true;
-  expect(input).to.be.required;
-  input.required = false;
-  input.setAttribute('aria-required', 'true');
-  expect(input).to.be.required;
+  document.body.innerHTML = `
+<input data-testid="required-input" required />
+<input data-testid="aria-required-input" aria-required="true" />
+<input data-testid="conflicted-input" required aria-required="false" />
+<input data-testid="aria-not-required-input" aria-required="false" />
+<input data-testid="optional-input" />
+<input data-testid="unsupported-type" type="image" required />
+<select data-testid="select" required></select>
+<textarea data-testid="textarea" required></textarea>
+<div data-testid="supported-role" role="tree" required></div>
+<div data-testid="supported-role-aria" role="tree" aria-required="true"></div>`;
+  expect(screen.getByTestId('required-input')).to.be.required;
+  expect(screen.getByTestId('aria-required-input')).to.be.required;
+  expect(screen.getByTestId('conflicted-input')).to.be.required;
+  expect(screen.getByTestId('aria-not-required-input')).not.to.be.required;
+  expect(screen.getByTestId('optional-input')).not.to.be.required;
+  expect(screen.getByTestId('unsupported-type')).not.to.be.required;
+  expect(screen.getByTestId('select')).to.be.required;
+  expect(screen.getByTestId('textarea')).to.be.required;
+  expect(screen.getByTestId('supported-role')).not.to.be.required;
+  expect(screen.getByTestId('supported-role-aria')).to.be.required;
 });
 
 Chai('validaes if visible or not', () => {
@@ -327,6 +355,144 @@ Chai('validate that element has specified value', () => {
   expect(numberInput).to.have.value.that.equals(5);
   expect(emptyInput).not.to.have.value;
   expect(selectInput).to.have.value.that.has.members(['second', 'third']);
+});
+
+Chai('validate that element has specified display values', () => {
+  document.body.innerHTML = `
+<label for="input-example">First name</label>
+<input type="text" id="input-example" value="Luca" />
+
+<label for="textarea-example">Description</label>
+<textarea id="textarea-example">An example description here.</textarea>
+
+<label for="single-select-example">Fruit</label>
+<select id="single-select-example">
+  <option value="">Select a fruit...</option>
+  <option value="banana">Banana</option>
+  <option value="ananas">Ananas</option>
+  <option value="avocado">Avocado</option>
+</select>
+
+<label for="multiple-select-example">Fruits</label>
+<select id="multiple-select-example" multiple>
+  <option value="">Select a fruit...</option>
+  <option value="banana" selected>Banana</option>
+  <option value="ananas">Ananas</option>
+  <option value="avocado" selected>Avocado</option>
+</select>`;
+  const input = screen.getByLabelText('First name');
+  const textarea = screen.getByLabelText('Description');
+  const selectSingle = screen.getByLabelText('Fruit');
+  const selectMultiple = screen.getByLabelText('Fruits');
+
+  expect(input).to.have.display.value.that.contains('Luca');
+  expect(input).to.have.display.value.that.matches(/Luc/);
+  expect(textarea).to.have.display.value.that.contains(
+    'An example description here.'
+  );
+  expect(textarea).to.have.display.value.that.matches(/example/);
+  expect(selectSingle).to.have.display.value.that.contains('Select a fruit...');
+  expect(selectSingle).to.have.display.value.that.matches(/Select/);
+  expect(selectMultiple)
+    .to.have.display.value.that.contains('Banana')
+    .and.matches(/Avocado/);
+});
+
+Chai('validates that element is checked', () => {
+  document.body.innerHTML = `
+<input type="checkbox" checked data-testid="input-checkbox-checked" />
+<input type="checkbox" data-testid="input-checkbox-unchecked" />
+<div role="checkbox" aria-checked="true" data-testid="aria-checkbox-checked" />
+<div
+  role="checkbox"
+  aria-checked="false"
+  data-testid="aria-checkbox-unchecked"
+/>
+
+<input type="radio" checked value="foo" data-testid="input-radio-checked" />
+<input type="radio" value="foo" data-testid="input-radio-unchecked" />
+<div role="radio" aria-checked="true" data-testid="aria-radio-checked" />
+<div role="radio" aria-checked="false" data-testid="aria-radio-unchecked" />
+<div role="switch" aria-checked="true" data-testid="aria-switch-checked" />
+<div role="switch" aria-checked="false" data-testid="aria-switch-unchecked" />`;
+  const inputCheckboxChecked = screen.getByTestId('input-checkbox-checked');
+  const inputCheckboxUnchecked = screen.getByTestId('input-checkbox-unchecked');
+  const ariaCheckboxChecked = screen.getByTestId('aria-checkbox-checked');
+  const ariaCheckboxUnchecked = screen.getByTestId('aria-checkbox-unchecked');
+  expect(inputCheckboxChecked).to.be.checked;
+  expect(inputCheckboxUnchecked).not.to.be.checked;
+  expect(ariaCheckboxChecked).to.be.checked;
+  expect(ariaCheckboxUnchecked).not.to.be.checked;
+
+  const inputRadioChecked = screen.getByTestId('input-radio-checked');
+  const inputRadioUnchecked = screen.getByTestId('input-radio-unchecked');
+  const ariaRadioChecked = screen.getByTestId('aria-radio-checked');
+  const ariaRadioUnchecked = screen.getByTestId('aria-radio-unchecked');
+  expect(inputRadioChecked).to.be.checked;
+  expect(inputRadioUnchecked).not.to.be.checked;
+  expect(ariaRadioChecked).to.be.checked;
+  expect(ariaRadioUnchecked).not.to.be.checked;
+
+  const ariaSwitchChecked = screen.getByTestId('aria-switch-checked');
+  const ariaSwitchUnchecked = screen.getByTestId('aria-switch-unchecked');
+  expect(ariaSwitchChecked).to.be.checked;
+  expect(ariaSwitchUnchecked).not.to.be.checked;
+});
+
+Chai('validates that element is partially checked', () => {
+  document.body.innerHTML = `
+<input type="checkbox" aria-checked="mixed" data-testid="aria-checkbox-mixed" />
+<input type="checkbox" checked data-testid="input-checkbox-checked" />
+<input type="checkbox" data-testid="input-checkbox-unchecked" />
+<div role="checkbox" aria-checked="true" data-testid="aria-checkbox-checked" />
+<div
+  role="checkbox"
+  aria-checked="false"
+  data-testid="aria-checkbox-unchecked"
+/>
+<input type="checkbox" data-testid="input-checkbox-indeterminate" />`;
+  const ariaCheckboxMixed = screen.getByTestId('aria-checkbox-mixed');
+  const inputCheckboxChecked = screen.getByTestId('input-checkbox-checked');
+  const inputCheckboxUnchecked = screen.getByTestId('input-checkbox-unchecked');
+  const ariaCheckboxChecked = screen.getByTestId('aria-checkbox-checked');
+  const ariaCheckboxUnchecked = screen.getByTestId('aria-checkbox-unchecked');
+  const inputCheckboxIndeterminate = screen.getByTestId(
+    'input-checkbox-indeterminate'
+  ) as HTMLInputElement;
+
+  expect(ariaCheckboxMixed).to.be.partially.checked;
+  expect(inputCheckboxChecked).not.to.be.partially.checked;
+  expect(inputCheckboxUnchecked).not.to.be.partially.checked;
+  expect(ariaCheckboxChecked).not.to.be.partially.checked;
+  expect(ariaCheckboxUnchecked).not.to.be.partially.checked;
+
+  inputCheckboxIndeterminate.indeterminate = true;
+  expect(inputCheckboxIndeterminate).to.be.partially.checked;
+});
+
+Chai('validate if element has error message', () => {
+  document.body.innerHTML = `
+<label for="startTime"> Please enter a start time for the meeting: </label>
+<input
+  id="startTime"
+  type="text"
+  aria-errormessage="msgID"
+  aria-invalid="true"
+  value="11:30 PM"
+/>
+<span id="msgID" aria-live="assertive" style="visibility:visible">
+  Invalid time: the time must be between 9:00 AM and 5:00 PM
+</span>`;
+  const timeInput = screen.getByLabelText(
+    'Please enter a start time for the meeting:'
+  );
+
+  expect(timeInput).to.have.error.that.equals(
+    'Invalid time: the time must be between 9:00 AM and 5:00 PM'
+  );
+  expect(timeInput).to.have.error.that.matches(/invalid time/i); // to partially match
+  expect(timeInput).to.have.error.that.contains('Invalid time'); // to partially match
+  expect(timeInput).to.have.error.that.does.not.contain('Pikachu!');
 });
 
 Chai.run();

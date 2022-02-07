@@ -24,7 +24,11 @@ declare module Chai {
     style(css: string | Record<string, any>): Assertion;
     notNormalized: Assertion;
     text: Assertion;
+    display: Assertion;
     value: Assertion;
+    partially: Assertion;
+    checked: Assertion;
+    error: Assertion;
   }
 
   interface Include {

@@ -35,3 +35,22 @@ export function getSingleElementValue(element: Element) {
       return (element as HTMLTextAreaElement).value;
   }
 }
+
+export function getDisplayedValues(tagName: string, htmlElement: any) {
+  return tagName === 'select'
+    ? Array.from(htmlElement)
+        .filter((option: any) => option.selected)
+        .map((option: any) => option.textContent)
+    : [htmlElement.value];
+}
+
+export function splitClassNames(str: string) {
+  if (!str) {
+    return [];
+  }
+  return str.split(/\s+/).filter((s) => s.length > 0);
+}
+
+export function normalize(text: string) {
+  return text.replace(/\s+/g, ' ').trim();
+}

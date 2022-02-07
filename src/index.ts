@@ -19,15 +19,15 @@ import {
   assertHasFocus,
   assertHasFormValues,
   assertHasStyle,
+  assertChecked,
+  assertPartiallyChecked,
 } from './assertions';
-import { getSingleElementValue } from './utils';
-
-function splitClassNames(str: string) {
-  if (!str) {
-    return [];
-  }
-  return str.split(/\s+/).filter((s) => s.length > 0);
-}
+import {
+  getSingleElementValue,
+  getDisplayedValues,
+  splitClassNames,
+  normalize,
+} from './utils';
 
 export default function chaiJSDOM(
   this: Chai.AssertionPrototype,
@@ -281,13 +281,23 @@ export default function chaiJSDOM(
     utils.flag(this, 'object', textContent);
   });
 
+  Assertion.addProperty('display', function () {
+    utils.flag(this, 'display', true);
+  });
+
   Assertion.addProperty('value', function (this: Chai.AssertionPrototype) {
     const actual: Element = this._obj;
     new Assertion(actual).to.be.instanceOf(Element);
     new Assertion(actual.tagName.toLowerCase()).to.not
       .equal('checkbox')
       .and.to.not.equal('radio');
-    const value = getSingleElementValue(actual);
+    let value;
+    if (!utils.flag(this, 'display')) {
+      value = getSingleElementValue(actual);
+    } else {
+      const tagName = actual.tagName.toLowerCase();
+      value = getDisplayedValues(tagName, actual);
+    }
     this.assert(
       !!value,
       'expected #{this} to have a value',
@@ -296,5 +306,50 @@ export default function chaiJSDOM(
       undefined
     );
     utils.flag(this, 'object', value);
+  });
+
+  Assertion.addProperty('partially', function () {
+    utils.flag(this, 'partially', true);
+  });
+
+  Assertion.addProperty('checked', function () {
+    const actual: HTMLElement = this._obj;
+    new Assertion(actual).to.be.instanceOf(Element);
+    const partially = utils.flag(this, 'partially');
+    if (partially) {
+      assertPartiallyChecked.call(this, actual);
+    } else {
+      assertChecked.call(this, actual);
+    }
+  });
+
+  Assertion.addProperty('error', function () {
+    const actual: HTMLElement = this._obj;
+    new Assertion(actual).to.be.instanceOf(Element);
+    const negate = utils.flag(this, 'negate');
+    this.assert(
+      actual.hasAttribute('aria-invalid') &&
+        actual.getAttribute('aria-invalid') !== 'false',
+      'expected #{this} to have an invalid state',
+      'expected #{this} not to have an invalid state',
+      !negate ? '[aria-invalid="true"]' : '[aria-invalid="false"]',
+      negate ? '[aria-invalid="true"]' : '[aria-invalid="false"]'
+    );
+    const errormessageIDRaw = actual.getAttribute('aria-errormessage') || '';
+    const errormessageIDs = errormessageIDRaw.split(/\s+/).filter(Boolean);
+    let errormessage = '';
+    if (errormessageIDs.length > 0) {
+      const document = actual.ownerDocument;
+
+      const errormessageEls = errormessageIDs
+        .map((errormessageID) => document.getElementById(errormessageID))
+        .filter(Boolean);
+
+      errormessage = normalize(
+        errormessageEls.map((el) => el?.textContent || '').join(' ')
+      );
+    }
+
+    utils.flag(this, 'object', errormessage);
   });
 }
