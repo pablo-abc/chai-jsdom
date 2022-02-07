@@ -27,6 +27,7 @@ import {
   getDisplayedValues,
   splitClassNames,
   normalize,
+  isEqual,
 } from './utils';
 
 export default function chaiJSDOM(
@@ -227,6 +228,28 @@ export default function chaiJSDOM(
     new Assertion(actual).to.be.instanceOf(Element);
     assertHasFocus.call(this, actual);
   }
+
+  function overwriteEquals(_super: any) {
+    return function (this: Chai.AssertionPrototype, value: string) {
+      if (utils.flag(this, 'class')) {
+        const actual = this._obj;
+        const splitClasses = splitClassNames(value);
+        this.assert(
+          isEqual(splitClasses.sort(), actual.sort()),
+          'expected #{this} to equal class #{exp}',
+          'expected #{this} not to equal class #{exp}',
+          splitClasses,
+          actual
+        );
+      } else {
+        _super.apply(this, arguments);
+      }
+    };
+  }
+
+  Assertion.overwriteMethod('equal', overwriteEquals);
+  Assertion.overwriteMethod('equals', overwriteEquals);
+  Assertion.overwriteMethod('eq', overwriteEquals);
 
   Assertion.addProperty('focus', assertFocus);
   Assertion.addProperty('focused', assertFocus);

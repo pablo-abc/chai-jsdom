@@ -263,6 +263,8 @@ Chai('validates if element has a class', () => {
     'btn-danger',
     'extra',
   ]); // if it has more than expected it is going to fail
+  expect(deleteButton).to.have.class.that.equals('btn-danger extra btn'); // to check if the element has EXACTLY a set of classes
+  expect(deleteButton).to.have.class.that.does.not.equal('btn-danger extra'); // if it has more than expected it is going to fail
 
   expect(noClasses).not.to.have.class;
 });
