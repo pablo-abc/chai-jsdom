@@ -5,7 +5,7 @@
 [![Tests](https://github.com/pablo-abc/chai-jsdom/actions/workflows/test.yml/badge.svg)](https://github.com/pablo-abc/chai-jsdom/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/pablo-abc/chai-jsdom/branch/main/graph/badge.svg?token=8XCCMF1ISJ)](https://codecov.io/gh/pablo-abc/chai-jsdom)
 
-A plugin for [Chai](https://chaijs.com) that builds on top of [@testing-library/jest-dom](https://github.com/testing-library/jest-dom) to provide its same checkers but for Chai.
+A plugin for [Chai][chai] that builds on top of [@testing-library/jest-dom](https://github.com/testing-library/jest-dom) to provide its same checkers but for Chai.
 
 The following docs are adjusted from `@testing-library/jest-dom`'s README.
 
@@ -33,8 +33,8 @@ yarn add --dev chai-jsdom
 Import `chai-jsdom` and use it with `chai`'s `use`:
 
 ```javascript
-// In your own jest-setup.js (or any other name)
-import { use } from 'chai';
+// In your test file
+import { use, expect } from 'chai';
 import chaiJSDOM from 'chai-jsdom'
 
 use(chaiJSDOM);
@@ -912,47 +912,7 @@ expect(timeInput).to.have.error.that.contains('Invalid time') // to partially ma
 expect(timeInput).to.have.error.that.does.not.contain('Pikachu!')
 ```
 
-[jest]: https://facebook.github.io/jest/
+[chai]: https://www.chaijs.com
 [dom-testing-library]: https://github.com/testing-library/dom-testing-library
-[react-testing-library]:
-  https://github.com/testing-library/react-testing-library
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
-[build-badge]: https://img.shields.io/github/workflow/status/testing-library/jest-dom/validate?logo=github&style=flat-square
-[build]: https://github.com/testing-library/jest-dom/actions?query=workflow%3Avalidate
-[coverage-badge]:
-  https://img.shields.io/codecov/c/github/testing-library/jest-dom.svg?style=flat-square
-[coverage]: https://codecov.io/github/testing-library/jest-dom
-[version-badge]:
- https://img.shields.io/npm/v/@testing-library/jest-dom.svg?style=flat-square
-[package]: https://www.npmjs.com/package/@testing-library/jest-dom
-[downloads-badge]:
-  https://img.shields.io/npm/dm/@testing-library/jest-dom.svg?style=flat-square
-[npmtrends]: http://www.npmtrends.com/@testing-library/jest-dom
-[license-badge]:
-  https://img.shields.io/npm/l/@testing-library/jest-dom.svg?style=flat-square
-[license]: https://github.com/testing-library/jest-dom/blob/main/LICENSE
-[prs-badge]:
-  https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[prs]: http://makeapullrequest.com
-[coc-badge]:
-  https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[coc]:
-  https://github.com/testing-library/jest-dom/blob/main/other/CODE_OF_CONDUCT.md
-[github-watch-badge]:
-  https://img.shields.io/github/watchers/testing-library/jest-dom.svg?style=social
-[github-watch]: https://github.com/testing-library/jest-dom/watchers
-[github-star-badge]:
-  https://img.shields.io/github/stars/testing-library/jest-dom.svg?style=social
-[github-star]: https://github.com/testing-library/jest-dom/stargazers
-[twitter]:
-  https://twitter.com/intent/tweet?text=Check%20out%20jest-dom%20by%20%40gnapse%20https%3A%2F%2Fgithub.com%2Ftesting-library%2Fjest-dom%20%F0%9F%91%8D
-[twitter-badge]:
-  https://img.shields.io/twitter/url/https/github.com/testing-library/jest-dom.svg?style=social
-[emojis]: https://github.com/all-contributors/all-contributors#emoji-key
-[all-contributors]: https://github.com/all-contributors/all-contributors
-[all-contributors-badge]:
-  https://img.shields.io/github/all-contributors/testing-library/jest-dom?color=orange&style=flat-square
-[guiding-principle]: https://testing-library.com/docs/guiding-principles
-[discord-badge]: https://img.shields.io/discord/723559267868737556.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
-[discord]: https://discord.gg/testing-library
