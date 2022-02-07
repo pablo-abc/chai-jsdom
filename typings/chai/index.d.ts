@@ -37,6 +37,7 @@ declare module Chai {
 }
 
 declare module 'chai-jsdom' {
-  const chaiDom: Chai.ChaiPlugin;
-  export = chaiDom;
+  const chaiJSDOM: Chai.ChaiPlugin;
+  export default chaiJSDOM;
+  export = chaiJSDOM;
 }
