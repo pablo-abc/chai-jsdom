@@ -1,5 +1,9 @@
 # chai-jsdom
 
+[![NPM Version](https://img.shields.io/npm/v/felte)](https://www.npmjs.com/package/felte)
+[![NPM Downloads](https://img.shields.io/npm/dw/felte)](https://www.npmjs.com/package/felte)
+[![Tests](https://github.com/pablo-abc/chai-jsdom/actions/workflows/test.yml/badge.svg)](https://github.com/pablo-abc/chai-jsdom/actions/workflows/test.yml)
+
 A plugin for [Chai](https://chaijs.com) that builds on top of [@testing-library/jest-dom](https://github.com/testing-library/jest-dom) to provide its same checkers but for Chai.
 
 The following docs are adjusted from `@testing-library/jest-dom`'s README.
@@ -360,10 +364,6 @@ expect(getByTestId('parent')).to.contain.html('</span>')
 
 ### `.description`
 
-```typescript
-toHaveAccessibleDescription(expectedAccessibleDescription?: string | RegExp)
-```
-
 This allows you to assert that an element has the expected
 [accessible description](https://w3c.github.io/accname/).
 
@@ -409,9 +409,6 @@ expect(getByTestId('logo')).to.have.a.description.that.contains(
 <hr />
 
 ### `.accessibleName`
-
-```typescript
-toHaveAccessibleName(expectedAccessibleName?: string | RegExp)
 ```
 
 This allows you to assert that an element has the expected
@@ -435,28 +432,23 @@ name of the element tested.
 ```
 
 ```javascript
-expect(getByTestId('img-alt')).toHaveAccessibleName('Test alt')
-expect(getByTestId('img-empty-alt')).not.toHaveAccessibleName()
-expect(getByTestId('svg-title')).toHaveAccessibleName('Test title')
-expect(getByTestId('button-img-alt')).toHaveAccessibleName()
-expect(getByTestId('img-paragraph')).not.toHaveAccessibleName()
-expect(getByTestId('svg-button')).toHaveAccessibleName()
-expect(getByTestId('svg-without-title')).not.toHaveAccessibleName()
-expect(getByTestId('input-title')).toHaveAccessibleName()
+expect(getByTestId('img-alt')).to.have.accessibleName.that.equals('Test alt')
+expect(getByTestId('img-empty-alt')).not.to.have.accessibleName
+expect(getByTestId('svg-title')).to.have.accessibleName.that.equals('Test title')
+expect(getByTestId('button-img-alt')).to.have.accessibleName
+expect(getByTestId('img-paragraph')).not.to.have.accessibleName
+expect(getByTestId('svg-button')).to.have.accessibleName
+expect(getByTestId('svg-without-title')).not.to.have.accessibleName
+expect(getByTestId('input-title')).to.have.accessibleName
 ```
 
 <hr />
 
-### `toHaveAttribute`
+### `.attribute`
 
-```typescript
-toHaveAttribute(attr: string, value?: any)
-```
+This allows you to check whether the given element has an attribute or not.
 
-This allows you to check whether the given element has an attribute or not. You
-can also optionally check that the attribute has a specific expected value or
-partial match using
-[expect.stringContaining](https://jestjs.io/docs/en/expect.html#expectnotstringcontainingstring)/[expect.stringMatching](https://jestjs.io/docs/en/expect.html#expectstringmatchingstring-regexp)
+Every assertion done after this is done on the value of the attribute selected.
 
 #### Examples
 
@@ -467,21 +459,17 @@ partial match using
 ```javascript
 const button = getByTestId('ok-button')
 
-expect(button).toHaveAttribute('disabled')
-expect(button).toHaveAttribute('type', 'submit')
-expect(button).not.toHaveAttribute('type', 'button')
+expect(button).to.have.attribute('disabled')
+expect(button).to.have.attribute('type').that.equals('submit')
+expect(button).not.to.have.attribute('type').that.equals('button')
 
-expect(button).toHaveAttribute('type', expect.stringContaining('sub'))
-expect(button).toHaveAttribute('type', expect.not.stringContaining('but'))
+expect(button).to.have.attribute('type').that.contains('sub')
+expect(button).to.have.attribute('type').that.does.not.contain('butt')
 ```
 
 <hr />
 
 ### `.class`
-
-```typescript
-toHaveClass(...classNames: string[], options?: {exact: boolean})
-```
 
 This allows you to check whether the given element has certain classes within
 its `class` attribute.
