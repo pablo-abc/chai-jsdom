@@ -307,8 +307,8 @@ expect(getByText('Hidden Attribute Example')).not.to.be.visible
 This allows you to assert whether an element contains another element as a
 descendant or not.
 
-This extends Chai's `contain`. You can use `contains`, `contain` and
-`contains` as aliases.
+This extends Chai's `contain`. You can use `contains`, `include` and
+`includes` as aliases.
 
 #### Examples
 
@@ -411,7 +411,6 @@ expect(getByTestId('logo')).to.have.a.description.that.contains(
 <hr />
 
 ### `.accessibleName`
-```
 
 This allows you to assert that an element has the expected
 [accessible name](https://w3c.github.io/accname/). It is useful, for instance,
@@ -477,8 +476,8 @@ This allows you to check whether the given element has certain classes within
 its `class` attribute.
 
 Every assertion done after `.class` is done on the class of the element being
-tested. `include` and `members` get extended to support a string with multiple
-classes.
+tested. `include`, `members` and `equal` get extended to support a string with
+multiple classes.
 
 #### Examples
 
