@@ -6,11 +6,12 @@
   "browser": "dist/esm/index.mjs",
   "module": "dist/esm/index.mjs",
   "types": "typings/chai/index.d.ts",
+  "type": "module",
   "scripts": {
-    "build": "rimraf dist && rollup -c",
+    "build": "rimraf dist && NODE_ENV=production rollup -c",
     "dev": "rollup -cw",
     "test": "uvu -r tsm -r global-jsdom/register tests -i common",
-    "test:ci": "nyc -n src pnpm test"
+    "test:ci": "nyc pnpm test"
   },
   "author": "Pablo Berganza <pablo@berganza.dev>",
   "license": "MIT",
@@ -28,6 +29,7 @@
     "chai": "^4.3.6",
     "global-jsdom": "^8.4.0",
     "jsdom": "^19.0.0",
+    "nyc": "^15.1.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.67.0",

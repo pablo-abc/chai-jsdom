@@ -215,6 +215,7 @@ export default function chaiJSDOM(
         assertHasAttribute.call(this, actual, name);
         utils.flag(this, 'object', actual.getAttribute(name));
       } else {
+        /* istanbul ignore next */
         _super.apply(this, arguments);
       }
     };
@@ -288,6 +289,7 @@ export default function chaiJSDOM(
     };
   });
 
+  /* istanbul ignore next */
   Assertion.addProperty('notNormalized', function () {
     utils.flag(this, 'notNormalized', true);
   });

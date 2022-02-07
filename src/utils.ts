@@ -4,7 +4,7 @@ function getSelectValue({ multiple, options }: HTMLSelectElement) {
   if (multiple) {
     return [...selectedOptions].map((opt) => opt.value);
   }
-  /* istanbul ignore if */
+  /* istanbul ignore next */
   if (selectedOptions.length === 0) {
     return undefined; // Couldn't make this happen, but just in case
   }
@@ -56,6 +56,7 @@ export function normalize(text: string) {
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
+  /* istanbul ignore next */
   return Object.prototype.toString.call(value) === '[object Object]';
 }
 
@@ -65,6 +66,7 @@ export function isEqual(val1: unknown, val2: unknown): boolean {
     if (val1.length !== val2.length) return false;
     return val1.every((v, i) => isEqual(v, val2[i]));
   }
+  /* istanbul ignore next */
   if (isPlainObject(val1) && isPlainObject(val2)) {
     const keys1 = Object.keys(val1);
     const keys2 = Object.keys(val2);

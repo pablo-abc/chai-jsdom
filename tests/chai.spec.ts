@@ -41,6 +41,7 @@ Chai('validates if empty or not', () => {
   expect(screen.getByTestId('empty')).to.be.empty;
   expect(screen.getByTestId('not-empty')).not.to.be.empty;
   expect(screen.getByTestId('with-whitespace')).not.to.be.empty;
+  expect([]).to.be.empty;
 });
 
 Chai('validates if in element or document', () => {

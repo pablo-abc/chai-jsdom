@@ -29,7 +29,9 @@ jobs:
       run: npm i -g pnpm
     - name: Install dependencies
       run: pnpm i
-    - name: Build packages
+    - name: Build package
       run: pnpm build
-    - name: Run tests
-      run: pnpm test
+    - name: Run tests and generate coverage
+      run: pnpm test:ci
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
