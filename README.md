@@ -134,7 +134,7 @@ expect(
 
 > Note: This matcher does not find detached elements. The element must be added
 > to the document to be found by toBeInTheDocument. If you desire to search in a
-> detached element please use: [`.includes`](#includes)
+> detached element please use: [`.contain`](#contain)
 
 <hr />
 
@@ -692,8 +692,8 @@ expect(element).to.have.text.that.does.not.contain('content')
 This allows you to check whether the given form element has the specified value.
 It accepts `<input>`, `<select>` and `<textarea>` elements with the exception of
 `<input type="checkbox">` and `<input type="radio">`, which can be meaningfully
-matched only using [`toBeChecked`](#tobechecked) or
-[`toHaveFormValues`](#tohaveformvalues).
+matched only using [`.checked`](#checked) or
+[`.formValues`](#formvalues).
 
 Every assertion done after this will be done on the value of the element being tested.
 
