@@ -3,6 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/chai-jsdom)](https://www.npmjs.com/package/chai-jsdom)
 [![NPM Downloads](https://img.shields.io/npm/dw/chai-jsdom)](https://www.npmjs.com/package/chai-jsdom)
 [![Tests](https://github.com/pablo-abc/chai-jsdom/actions/workflows/test.yml/badge.svg)](https://github.com/pablo-abc/chai-jsdom/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/pablo-abc/chai-jsdom/branch/main/graph/badge.svg?token=8XCCMF1ISJ)](https://codecov.io/gh/pablo-abc/chai-jsdom)
 
 A plugin for [Chai](https://chaijs.com) that builds on top of [@testing-library/jest-dom](https://github.com/testing-library/jest-dom) to provide its same checkers but for Chai.
 
