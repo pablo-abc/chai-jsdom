@@ -16,11 +16,18 @@ import {
   assertHasAccessibleDescription,
   assertHasAccessibleName,
   assertHasAttribute,
-  assertHasClass,
   assertHasFocus,
   assertHasFormValues,
   assertHasStyle,
 } from './assertions';
+import { getSingleElementValue } from './utils';
+
+function splitClassNames(str: string) {
+  if (!str) {
+    return [];
+  }
+  return str.split(/\s+/).filter((s) => s.length > 0);
+}
 
 export default function chaiJSDOM(
   this: Chai.AssertionPrototype,
@@ -135,6 +142,15 @@ export default function chaiJSDOM(
               undefined,
               undefined
             );
+          } else if (Array.isArray(actual) && utils.flag(this, 'class')) {
+            const splitValues = splitClassNames(value);
+            this.assert(
+              splitValues.every((v) => actual.includes(v)),
+              'expected #{this} to contain: #{exp}',
+              'expected #{this} not to contain: #{exp}',
+              splitValues.join(' '),
+              actual.join(' ')
+            );
           } else {
             _super.apply(this, arguments);
           }
@@ -152,6 +168,24 @@ export default function chaiJSDOM(
   Assertion.overwriteChainableMethod(...createOverwriteInclude('includes'));
   Assertion.overwriteChainableMethod(...createOverwriteInclude('contain'));
   Assertion.overwriteChainableMethod(...createOverwriteInclude('contains'));
+
+  Assertion.overwriteMethod('members', function (_super) {
+    return function (
+      this: Chai.AssertionPrototype,
+      values: any[],
+      ...args: any[]
+    ) {
+      if (
+        utils.flag(this, 'class') &&
+        values.every((v) => typeof v === 'string')
+      ) {
+        const splitValues = splitClassNames(values.join(' '));
+        _super.call(this, splitValues, ...args);
+      } else {
+        _super.call(this, values, ...args);
+      }
+    };
+  });
 
   Assertion.addProperty('description', function () {
     const actual: Element = this._obj;
@@ -181,20 +215,11 @@ export default function chaiJSDOM(
     };
   });
 
-  Assertion.addProperty('exact', function () {
-    utils.flag(this, 'exact', true);
-  });
-
-  Assertion.overwriteMethod('class', function (_super: any) {
-    return function (this: Chai.AssertionPrototype, ...classes: string[]) {
-      const actual = this._obj;
-      if (actual && actual instanceof Element) {
-        const exact = utils.flag(this, 'exact');
-        assertHasClass.call(this, actual, ...classes, { exact });
-      } else {
-        _super.apply(this, arguments);
-      }
-    };
+  Assertion.addProperty('class', function (this: Chai.AssertionPrototype) {
+    const actual: Element = this._obj;
+    new Assertion(actual).to.be.instanceOf(Element);
+    utils.flag(this, 'object', splitClassNames(actual.className));
+    utils.flag(this, 'class', true);
   });
 
   function assertFocus(this: Chai.AssertionPrototype) {
@@ -254,5 +279,22 @@ export default function chaiJSDOM(
       undefined
     );
     utils.flag(this, 'object', textContent);
+  });
+
+  Assertion.addProperty('value', function (this: Chai.AssertionPrototype) {
+    const actual: Element = this._obj;
+    new Assertion(actual).to.be.instanceOf(Element);
+    new Assertion(actual.tagName.toLowerCase()).to.not
+      .equal('checkbox')
+      .and.to.not.equal('radio');
+    const value = getSingleElementValue(actual);
+    this.assert(
+      !!value,
+      'expected #{this} to have a value',
+      'expected #{this} not to have a value',
+      undefined,
+      undefined
+    );
+    utils.flag(this, 'object', value);
   });
 }

@@ -17,13 +17,14 @@ declare module Chai {
     attribute(name: string): Assertion;
     element: Assertion;
     exact: Assertion;
-    class(...classes: string[]): Assertion;
+    class: Assertion;
     focus: Assertion;
     focused: Assertion;
     formValues(values: Record<string, any>): Assertion;
     style(css: string | Record<string, any>): Assertion;
     notNormalized: Assertion;
     text: Assertion;
+    value: Assertion;
   }
 
   interface Include {

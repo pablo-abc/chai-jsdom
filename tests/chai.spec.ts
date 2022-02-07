@@ -219,15 +219,24 @@ Chai('validates if element has a class', () => {
   const deleteButton = screen.getByTestId('delete-button');
   const noClasses = screen.getByTestId('no-classes');
 
-  expect(deleteButton).to.have.class('extra');
-  expect(deleteButton).to.have.class('btn-danger btn');
-  expect(deleteButton).to.have.class('btn-danger', 'btn');
-  expect(deleteButton).not.to.have.class('btn-link');
+  expect(deleteButton).to.have.class.that.contains('extra');
+  expect(deleteButton).to.have.class.that.contains('btn-danger btn');
+  expect(deleteButton).to.have.class.that.contains.members([
+    'btn-danger',
+    'btn',
+  ]);
+  expect(deleteButton).not.to.have.class.that.contains('btn-link');
 
-  expect(deleteButton).to.have.exact.class('btn-danger extra btn'); // to check if the element has EXACTLY a set of classes
-  expect(deleteButton).not.to.have.exact.class('btn-danger extra'); // if it has more than expected it is going to fail
+  expect(deleteButton).to.have.class.that.has.members([
+    'btn-danger',
+    'extra btn',
+  ]); // to check if the element has EXACTLY a set of classes
+  expect(deleteButton).to.have.class.that.does.not.have.members([
+    'btn-danger',
+    'extra',
+  ]); // if it has more than expected it is going to fail
 
-  expect(noClasses).not.to.have.class();
+  expect(noClasses).not.to.have.class;
 });
 
 Chai('validate if element has focus', () => {
@@ -297,6 +306,27 @@ Chai('validate that element has specified text content', () => {
   expect(element).to.have.text.that.matches(/^Text Content$/); // to match the whole content
   expect(element).to.have.text.that.matches(/content$/i); // to use case-insensitive match
   expect(element).to.have.text.that.does.not.contain('content');
+});
+
+Chai('validate that element has specified value', () => {
+  document.body.innerHTML = `
+<input type="text" value="text" data-testid="input-text" />
+<input type="number" value="5" data-testid="input-number" />
+<input type="text" data-testid="input-empty" />
+<select multiple data-testid="select-number">
+  <option value="first">First Value</option>
+  <option value="second" selected>Second Value</option>
+  <option value="third" selected>Third Value</option>
+</select>`;
+  const textInput = screen.getByTestId('input-text');
+  const numberInput = screen.getByTestId('input-number');
+  const emptyInput = screen.getByTestId('input-empty');
+  const selectInput = screen.getByTestId('select-number');
+
+  expect(textInput).to.have.value.that.equals('text');
+  expect(numberInput).to.have.value.that.equals(5);
+  expect(emptyInput).not.to.have.value;
+  expect(selectInput).to.have.value.that.has.members(['second', 'third']);
 });
 
 Chai.run();

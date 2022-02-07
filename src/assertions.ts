@@ -8,7 +8,6 @@ export { assertContainsHTML } from './contain-html';
 export { assertHasAccessibleDescription } from './has-accessible-description';
 export { assertHasAccessibleName } from './has-accessible-name';
 export { assertHasAttribute } from './has-attribute';
-export { assertHasClass } from './has-class';
 export { assertHasFocus } from './has-focus';
 export { assertHasFormValues } from './has-form-values';
 export { assertHasStyle } from './has-style';
