@@ -418,7 +418,7 @@ This allows you to assert that an element has the expected
 [accessible name](https://w3c.github.io/accname/). It is useful, for instance,
 to assert that form elements and buttons are properly labelled.
 
-Every assertion done after `.description` is done on top of the accessible
+Every assertion done after `.accessibleName` is done on top of the accessible
 name of the element tested.
 
 #### Examples
