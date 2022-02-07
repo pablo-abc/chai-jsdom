@@ -8,6 +8,8 @@ A plugin for [Chai](https://chaijs.com) that builds on top of [@testing-library/
 
 The following docs are adjusted from `@testing-library/jest-dom`'s README.
 
+> **NOTE**: this package is really new, and mostly just a wrapper on top of `@testing-library/jest-dom`. Most likely some error messages won't be that useful to you. That said, I'm successfully using this with [Felte](https://github.com/pablo-abc/felte).
+
 ## Installation
 
 This module is distributed via [npm][npm] which is bundled with [node][node] and
